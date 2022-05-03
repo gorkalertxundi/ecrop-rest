@@ -1,0 +1,15 @@
+spring:     
+  datasource:
+    driverClassName: org.postgresql.Driver
+    password: ENC(4RqM9Dzr4Ffuv0BicgwqoUSgQ4xq3erNsI7vvU4VWvh5hjwtMOuaZ8X0H+/QVb4e+27FUXV4AnVSuT3woTT9mg==)
+    username: ecrop
+    url: jdbc:postgresql://deployecrop.ddns.net:5432/ecrop
+    hikari:
+      schema: ecrop
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate: 
+      ddl-auto: update
+    properties:
+      hibernate:
+        default-schema: ecrop
