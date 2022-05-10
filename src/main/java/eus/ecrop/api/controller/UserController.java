@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping
-    public String user(@AuthenticationPrincipal OidcUser principal) {
-        return principal.getAuthorities().toString();
-        // return "saturno";
-        // return "<h1>Hey " + principal.getAuthorities() + "</h1>";
+    public OidcUser user(@AuthenticationPrincipal OidcUser principal) {
+        return principal;
     }
 }
