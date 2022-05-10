@@ -13,6 +13,6 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        default-schema: ecrop
+        default-schema:
 
   thyemeleaf:
