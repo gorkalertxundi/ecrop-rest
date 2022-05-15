@@ -14,5 +14,4 @@ spring:
     properties:
       hibernate:
         default-schema:
-
-  thyemeleaf:
+        

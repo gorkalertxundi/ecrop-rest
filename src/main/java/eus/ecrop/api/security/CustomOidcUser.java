@@ -1,36 +1,29 @@
 package eus.ecrop.api.security;
 
-import java.util.Collection;
+import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
-import lombok.Getter;
-import lombok.Setter;
+import eus.ecrop.api.domain.User;
 
-/*
-* @author Mikel Orobengoa
-* @version 10/05/2022
-*/
-
-@Getter @Setter
 public class CustomOidcUser extends DefaultOidcUser {
 
-    private OAuth2AccessToken oAuth2AccessToken;
+    private User user;
 
-    public CustomOidcUser(Collection<? extends GrantedAuthority> authorities, OidcIdToken idToken,
+    public CustomOidcUser(User user, OidcIdToken idToken,
             OidcUserInfo userInfo) {
-        super(authorities, idToken, userInfo);
+        super(user.getRole().getPrivileges().stream()
+                .map(privilege -> new SimpleGrantedAuthority(privilege.getCode())).collect(Collectors.toSet()), idToken,
+                userInfo, IdTokenClaimNames.SUB);
+        this.user = user;
     }
 
-    public CustomOidcUser(Collection<? extends GrantedAuthority> authorities, OidcIdToken idToken,
-            OidcUserInfo userInfo, OAuth2AccessToken oAuth2AccessToken) {
-        super(authorities, idToken, userInfo);
-        this.oAuth2AccessToken = oAuth2AccessToken;
-
+    public User getUser() {
+        return user;
     }
-
+   
 }

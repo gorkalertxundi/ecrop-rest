@@ -1,10 +1,6 @@
 package eus.ecrop.api.security;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -34,10 +30,7 @@ public class CustomOidcUserServiceImpl implements OAuth2UserService<OidcUserRequ
         if (user == null) {
             user = userService.registerUser(oidcUser.getSubject());
         }
-
-        Set<SimpleGrantedAuthority> authorities = user.getRole().getPrivileges().stream()
-                .map(privilege -> new SimpleGrantedAuthority(privilege.getCode())).collect(Collectors.toSet());
-        oidcUser = new CustomOidcUser(authorities, oidcUser.getIdToken(), oidcUser.getUserInfo(), userRequest.getAccessToken());
+        oidcUser = new CustomOidcUser(user, oidcUser.getIdToken(), oidcUser.getUserInfo());
         return oidcUser;
     }
 }
