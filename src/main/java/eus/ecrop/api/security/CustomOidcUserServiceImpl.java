@@ -15,6 +15,7 @@ import eus.ecrop.api.service.UserService;
 * @author Mikel Orobengoa
 * @version 10/05/2022
 */
+
 @Component
 public class CustomOidcUserServiceImpl implements OAuth2UserService<OidcUserRequest, OidcUser> {
 

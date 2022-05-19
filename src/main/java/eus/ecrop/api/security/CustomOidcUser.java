@@ -10,6 +10,11 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 import eus.ecrop.api.domain.User;
 
+/*
+* @author Mikel Orobengoa
+* @version 19/05/2022
+*/
+
 public class CustomOidcUser extends DefaultOidcUser {
 
     private User user;

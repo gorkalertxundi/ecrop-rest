@@ -13,6 +13,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+/*
+* @author Mikel Orobengoa
+* @version 19/05/2022
+*/
+
 @Component
 @Priority(Ordered.HIGHEST_PRECEDENCE)
 public class CustomCorsFilter extends CorsFilter {

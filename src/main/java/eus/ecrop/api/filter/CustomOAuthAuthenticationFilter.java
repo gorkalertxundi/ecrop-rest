@@ -24,16 +24,20 @@ import eus.ecrop.api.domain.Privilege;
 import eus.ecrop.api.domain.User;
 import eus.ecrop.api.security.CustomOidcUser;
 
+/*
+* @author Mikel Orobengoa
+* @version 19/05/2022
+*/
+
 public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFilter {
 
-    
     @Autowired
     public CustomOAuthAuthenticationFilter(ClientRegistrationRepository clientRegistrationRepository,
-    OAuth2AuthorizedClientService authorizedClientService, AuthenticationManager authenticationManager) {
+            OAuth2AuthorizedClientService authorizedClientService, AuthenticationManager authenticationManager) {
         super(clientRegistrationRepository, authorizedClientService);
         super.setAuthenticationManager(authenticationManager);
     }
-    
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
             HttpServletResponse response)
@@ -62,15 +66,17 @@ public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-
-        response.addHeader("Set-Cookie", "access_token=" + accessToken + "; Path=/;");
-        response.addHeader("Set-Cookie", "refresh_token=" + refreshToken + "; Path=/;");
+        response.addHeader("Set-Cookie", "access_token=" + accessToken + "; expires="
+                + new Date(System.currentTimeMillis() + (1000 * 10 * 60)) + "; Path=/;");
+        response.addHeader("Set-Cookie",
+                "refresh_token=" + refreshToken + "; expires=" + new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 30)) + "; Path=/;");
         response.addHeader("Set-Cookie", "JSESSIONID=" + "; Path=/;");
         response.setHeader("access_token", accessToken);
         response.setHeader("refresh_token", refreshToken);
-        // response.sendRedirect(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
+        // response.sendRedirect(request.getScheme() + "://" + request.getServerName() +
+        // ":" + request.getServerPort());
         response.sendRedirect(request.getScheme() + "://" + request.getServerName());
-        
+
     }
 
 }

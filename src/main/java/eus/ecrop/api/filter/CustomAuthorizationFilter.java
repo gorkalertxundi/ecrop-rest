@@ -23,6 +23,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/*
+* @author Mikel Orobengoa
+* @version 19/05/2022
+*/
+
 @Component
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 

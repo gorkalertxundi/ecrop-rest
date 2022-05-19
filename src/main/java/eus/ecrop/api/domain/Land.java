@@ -1,18 +1,15 @@
 package eus.ecrop.api.domain;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Generated;
@@ -21,36 +18,37 @@ import lombok.ToString;
 
 /*
 * @author Mikel Orobengoa
-* @version 04/05/2022
+* @version 19/05/2022
 */
 
 @Entity
-@Table(name = "privilege")
-@Data
-@AllArgsConstructor
+@Table(name = "land")
 @NoArgsConstructor
+@Data
 @Generated
-public class Privilege {
+public class Land {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code", nullable = false, length = 64)
-    private String code;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "i18n", nullable = false, length = 64)
-    private String i18n;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
 
-    @Column(name = "enabled", nullable = false)
-    private Boolean enabled;
+    @Column(name = "nitrogen", nullable = true)
+    private Double nitrogen;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "privileges")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<Role> roles;
+    @Column(name = "phosphorus", nullable = true)
+    private Double phosphorus;
+
+    @Column(name = "copper", nullable = true)
+    private Double copper;
 
     @Version
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Integer version;
 

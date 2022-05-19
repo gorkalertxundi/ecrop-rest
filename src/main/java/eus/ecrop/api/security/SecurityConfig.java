@@ -24,7 +24,7 @@ import eus.ecrop.api.filter.CustomOAuthAuthenticationFilter;
 
 /*
 * @author Mikel Orobengoa
-* @version 06/05/2022
+* @version 19/05/2022
 */
 
 @EnableWebSecurity
