@@ -14,4 +14,11 @@ spring:
     properties:
       hibernate:
         default-schema:
+
+logging:
+    level:
+      org:
+        hibernate:
+          # type: TRACE
+          # SQL: TRACE
         

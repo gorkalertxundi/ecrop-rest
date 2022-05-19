@@ -11,5 +11,6 @@ public interface UserService {
     
     public User findByIdToken(String idToken);
     public User registerUser(String idToken);
+    public User findById(Long id);
 
 }

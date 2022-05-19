@@ -1,4 +1,4 @@
-package eus.ecrop.api.security;
+package eus.ecrop.api.filter;
 
 import java.io.IOException;
 import java.util.Date;
@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,6 +22,7 @@ import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationF
 
 import eus.ecrop.api.domain.Privilege;
 import eus.ecrop.api.domain.User;
+import eus.ecrop.api.security.CustomOidcUser;
 
 public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFilter {
 
@@ -38,7 +38,6 @@ public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFi
     public Authentication attemptAuthentication(HttpServletRequest request,
             HttpServletResponse response)
             throws AuthenticationException {
-        // TODO Auto-generated method stub
         return super.attemptAuthentication(request, response);
     }
 
@@ -48,7 +47,6 @@ public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFi
         CustomOidcUser oidcUser = (CustomOidcUser) authResult.getPrincipal();
         User user = oidcUser.getUser();
         // TODO: Jasyptear
-        System.out.println("WE IN'ERE");
         Algorithm algorithm = Algorithm.HMAC256("secret");
         String accessToken = JWT.create()
                 .withSubject(user.getId().toString())
@@ -58,18 +56,20 @@ public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFi
                         user.getRole().getPrivileges().stream().map(Privilege::getCode).collect(Collectors.toList()))
                 .sign(algorithm);
 
-        String refresToken = JWT.create()
+        String refreshToken = JWT.create()
                 .withSubject(user.getId().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
 
-        response.addHeader("Set-Cookie", "access_token=" + accessToken + "; SameSite=Strict;");
-        response.addHeader("Set-Cookie", "refresh_token=" + refresToken + "; SameSite=Strict;");
-        // response.setHeader("access_token", accessToken);
-        // response.setHeader("refresh_token", refresToken);
-        response.sendRedirect(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
+        response.addHeader("Set-Cookie", "access_token=" + accessToken + "; Path=/;");
+        response.addHeader("Set-Cookie", "refresh_token=" + refreshToken + "; Path=/;");
+        response.addHeader("Set-Cookie", "JSESSIONID=" + "; Path=/;");
+        response.setHeader("access_token", accessToken);
+        response.setHeader("refresh_token", refreshToken);
+        // response.sendRedirect(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
+        response.sendRedirect(request.getScheme() + "://" + request.getServerName());
         
     }
 
