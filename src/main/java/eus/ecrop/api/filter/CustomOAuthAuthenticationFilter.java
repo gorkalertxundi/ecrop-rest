@@ -29,6 +29,9 @@ import eus.ecrop.api.security.CustomOidcUser;
 * @version 19/05/2022
 */
 
+/**
+ * A filter that generates a JWT token and a refresh token after a successful authentication
+ */
 public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFilter {
 
     @Value("${spring.security.jwt.secret}")

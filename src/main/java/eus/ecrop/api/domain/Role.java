@@ -1,5 +1,6 @@
 package eus.ecrop.api.domain;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -25,12 +26,17 @@ import lombok.ToString;
 * @version 06/05/2022
 */
 
+/**
+ * Role represents a User role in the system
+ */
 @Entity
 @Table(name = "role")
 @NoArgsConstructor
 @Data
 @Generated
-public class Role {
+public class Role implements Serializable {
+
+    private static final long serialVersionUID = -812059079087230117L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

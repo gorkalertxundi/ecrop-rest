@@ -15,6 +15,9 @@ import eus.ecrop.api.domain.User;
 * @version 19/05/2022
 */
 
+/**
+ * CustomOidcUser is a custom subclass of DefaultOidcUser to map the User class to a Principal
+ */
 public class CustomOidcUser extends DefaultOidcUser {
 
     private User user;

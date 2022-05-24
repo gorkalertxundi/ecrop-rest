@@ -23,6 +23,9 @@ import lombok.ToString;
 * @version 06/05/2022
 */
 
+/**
+ * User represents a user in the system
+ */
 @Entity
 @Table(name = "`user`")
 @NoArgsConstructor

@@ -1,5 +1,7 @@
 package eus.ecrop.api.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,12 +23,17 @@ import lombok.ToString;
 * @version 19/05/2022
 */
 
+/**
+ * Land is a class that represents a land owned by a user
+ */
 @Entity
 @Table(name = "land")
 @NoArgsConstructor
 @Data
 @Generated
-public class Land {
+public class Land implements Serializable {
+
+    private static final long serialVersionUID = -212057072087235117L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

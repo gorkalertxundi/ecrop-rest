@@ -27,6 +27,10 @@ import eus.ecrop.api.filter.CustomOAuthAuthenticationFilter;
 * @version 19/05/2022
 */
 
+/**
+ * It's a Spring Security configuration class that allows the application to accept requests from the
+ * localhost, and it configures the OAuth2 authentication process.
+ */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -64,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * It allows the application to accept requests from the localhost.
+     * Bean that allows to configure CORS headers
      * 
      * @return A CorsConfigurationSource object.
      */

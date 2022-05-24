@@ -29,7 +29,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 * @version 19/05/2022
 */
 
-@Component
+@/**
+ * It checks if the request is for the login page or the refresh token page, if it is, it allows the
+ * request to go through. If it's not, it checks if the request has a valid JWT token in the header,
+ * if it does, it sets the authentication in the security context and allows the request to go
+ * through. If it doesn't, it sends a 403 error
+ */
+Component
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Value("${spring.security.jwt.secret}")

@@ -34,6 +34,15 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    /**
+     * It takes the refresh token from the request header, verifies it, and then
+     * creates a new access token
+     * with the same subject and claims as the refresh token
+     * 
+     * @param request  The request object
+     * @param response The response object that will be sent back to the client.
+     * @return A map of tokens.
+     */
     @GetMapping("/refresh")
     @CrossOrigin(origins = "*")
     public Map<String, String> refreshToken(HttpServletRequest request, HttpServletResponse response) {

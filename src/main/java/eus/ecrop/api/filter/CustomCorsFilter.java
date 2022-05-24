@@ -20,6 +20,10 @@ import org.springframework.web.filter.CorsFilter;
 * @version 19/05/2022
 */
 
+/**
+ * It's a custom implementation of the Spring CorsFilter that allows you to set the
+ * CORS headers in the response.
+ */
 @Component
 @Priority(Ordered.HIGHEST_PRECEDENCE)
 public class CustomCorsFilter extends CorsFilter {

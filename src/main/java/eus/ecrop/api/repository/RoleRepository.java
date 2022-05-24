@@ -12,9 +12,12 @@ import eus.ecrop.api.domain.Role;
 * @version 10/05/2022
 */
 
+/*
+* A repository interface for the Role entity.
+*/
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     public Optional<Role> findByName(String name);
-    
+
 }

@@ -16,6 +16,9 @@ import eus.ecrop.api.service.UserService;
 * @version 10/05/2022
 */
 
+/**
+ * Custom implementation of the loadUSer method to map the OidcUserRequest to a User Principal.
+ */
 @Component
 public class CustomOidcUserServiceImpl implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
