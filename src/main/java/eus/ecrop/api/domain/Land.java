@@ -1,8 +1,6 @@
 package eus.ecrop.api.domain;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -23,20 +20,20 @@ import lombok.ToString;
 
 /*
 * @author Mikel Orobengoa
-* @version 06/05/2022
+* @version 19/05/2022
 */
 
 /**
- * Role represents a User role in the system
+ * Land is a class that represents a land owned by a user
  */
 @Entity
-@Table(name = "role")
+@Table(name = "land")
 @NoArgsConstructor
 @Data
 @Generated
-public class Role implements Serializable {
+public class Land implements Serializable {
 
-    private static final long serialVersionUID = -812059079087230117L;
+    private static final long serialVersionUID = -212057072087235117L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,18 +42,20 @@ public class Role implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "enabled", nullable = false)
-    private Boolean enabled;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
 
-    @OneToMany(mappedBy = "role")
-    private List<User> users;
+    @Column(name = "nitrogen", nullable = true)
+    private Double nitrogen;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<Privilege> privileges;
+    @Column(name = "phosphorus", nullable = true)
+    private Double phosphorus;
+
+    @Column(name = "copper", nullable = true)
+    private Double copper;
 
     @Version
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Integer version;
 

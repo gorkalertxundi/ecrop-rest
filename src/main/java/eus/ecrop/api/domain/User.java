@@ -23,6 +23,9 @@ import lombok.ToString;
 * @version 06/05/2022
 */
 
+/**
+ * User represents a user in the system
+ */
 @Entity
 @Table(name = "`user`")
 @NoArgsConstructor
@@ -30,7 +33,7 @@ import lombok.ToString;
 @Generated
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -8446982019565427240L;
+    private static final long serialVersionUID = -812079079087230107L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +53,4 @@ public class User implements Serializable {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Integer version;
-
 }

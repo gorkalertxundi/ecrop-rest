@@ -25,15 +25,18 @@ import lombok.ToString;
 * @version 04/05/2022
 */
 
+/**
+ * Privilege is a class that represents a GrantedAuthority that can be assigned to a User Role
+ */
 @Entity
 @Table(name = "privilege")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Generated
-public class Privilege implements Serializable{
+public class Privilege implements Serializable {
 
-    private static final long serialVersionUID = -9015672710263777203L;
+    private static final long serialVersionUID = -112079579087234107L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

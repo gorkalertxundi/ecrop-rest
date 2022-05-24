@@ -15,4 +15,10 @@ spring:
       hibernate:
         default-schema:
 
-  thyemeleaf:
+logging:
+    level:
+      org:
+        hibernate:
+          # type: TRACE
+          # SQL: TRACE
+        
