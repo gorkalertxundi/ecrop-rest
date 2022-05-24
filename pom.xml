@@ -12,6 +12,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>eCrop API</name>
 	<description>eCrop API</description>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -80,6 +81,7 @@
 				<artifactId>jasypt-maven-plugin</artifactId>
 				<version>3.0.3</version>
 			</plugin>
+
 		</plugins>
 	</build>
 
