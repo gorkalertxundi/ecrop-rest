@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eus.ecrop.api.domain.Privilege;
 import eus.ecrop.api.domain.User;
+import eus.ecrop.api.exception.MissingTokenException;
 import eus.ecrop.api.service.UserService;
 
 @RestController
@@ -63,9 +64,9 @@ public class AuthController {
                 response.setStatus(HttpStatus.FORBIDDEN.value());
             }
         } else {
-            throw new RuntimeException("Refresh token is missing");
+            throw new MissingTokenException("Refresh token is missing");
         }
-        return null;
+        return new HashMap<>();
     }
 
 }

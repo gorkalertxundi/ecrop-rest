@@ -20,3 +20,7 @@ spring:
           google:
             client-id: 273953717517-ph3g3pmvq86gr7h0ffkf393dg1027mf1.apps.googleusercontent.com
             client-secret: ENC(6ZzUWALRSMPkjckOFa5s/ZdVi0jG03XJHXQWaxauN0EgIW2xEZFRglJ0Im2N1kkT1FE2hFtPnkEJjYuhTcdp4iVPbGKrRikM9DJZxib9pDo=)
+    jwt:
+      secret: ENC(13zT+oqWHwJ8pRRj5eH2sV6Z8T7E15BZYDjdkKAry6qsKhjGJVhljrQGhq0NyCbXpHDdo+Agl7A/rNBJYgBKvQ==)
+
+  

@@ -1,5 +1,7 @@
 package eus.ecrop.api.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +28,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @Generated
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -812079079087230107L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

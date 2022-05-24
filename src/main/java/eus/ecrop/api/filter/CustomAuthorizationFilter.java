@@ -15,6 +15,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,25 +32,27 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
+    @Value("${spring.security.jwt.secret}")
+    private String jwtSecret;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (request.getServletPath().equals("/login/oauth2/code/google") || request.getServletPath().equals("/auth/refresh")) {
+        if (request.getServletPath().equals("/login/oauth2/code/google")
+                || request.getServletPath().equals("/auth/refresh")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String userId = decodedJWT.getSubject();
                     String[] privileges = decodedJWT.getClaim("privileges").asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    Arrays.stream(privileges).forEach(p -> {
-                        authorities.add(new SimpleGrantedAuthority(p));
-                    });
+                    Arrays.stream(privileges).forEach(p -> authorities.add(new SimpleGrantedAuthority(p)));
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userId, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -57,7 +60,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 } catch (Exception e) {
                     e.printStackTrace();
                     response.setStatus(HttpStatus.FORBIDDEN.value());
-                        response.sendError(HttpStatus.FORBIDDEN.value());
+                    response.sendError(HttpStatus.FORBIDDEN.value());
                 }
             } else {
                 filterChain.doFilter(request, response);

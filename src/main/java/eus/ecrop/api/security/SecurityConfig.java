@@ -42,12 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthorizationFilter authorizationFilter;
 
-    // @Override
-    // protected void configure(AuthenticationManagerBuilder auth) throws Exception
-    // {
-    // auth.userDetailsService(userDetailsService);
-    // }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -69,6 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oidcUserService(oidcUserService);
     }
 
+    /**
+     * It allows the application to accept requests from the localhost.
+     * 
+     * @return A CorsConfigurationSource object.
+     */
     @Primary
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -88,11 +87,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     OAuth2UserService<OidcUserRequest, OidcUser> getOidcUserService() {
         return new CustomOidcUserServiceImpl();
     }
-
-    // @Bean
-    // @Override
-    // public AuthenticationManager authenticationManagerBean() throws Exception {
-    // return super.authenticationManagerBean();
-    // }
-
 }
