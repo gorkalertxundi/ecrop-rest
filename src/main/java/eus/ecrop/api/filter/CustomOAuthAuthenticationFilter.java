@@ -13,7 +13,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -26,23 +25,24 @@ import eus.ecrop.api.security.CustomOidcUser;
 
 /*
 * @author Mikel Orobengoa
-* @version 19/05/2022
+* @version 26/05/2022
 */
 
 /**
- * A filter that generates a JWT token and a refresh token after a successful authentication
+ * A filter that generates a JWT token and a refresh token after a successful
+ * authentication
  */
 public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFilter {
 
-    @Value("${spring.security.jwt.secret}")
-    private String jwtSecret;
+    private Algorithm algorithm;
 
     @Autowired
     public CustomOAuthAuthenticationFilter(ClientRegistrationRepository clientRegistrationRepository,
             OAuth2AuthorizedClientService authorizedClientService,
-            AuthenticationManager authenticationManager) {
+            AuthenticationManager authenticationManager, Algorithm algorithm) {
         super(clientRegistrationRepository, authorizedClientService);
         super.setAuthenticationManager(authenticationManager);
+        this.algorithm = algorithm;
     }
 
     @Override
@@ -52,28 +52,30 @@ public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFi
         CustomOidcUser oidcUser = (CustomOidcUser) authResult.getPrincipal();
         User user = oidcUser.getUser();
 
-        Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
+        Date accessTokenExpiration = new Date(System.currentTimeMillis() + 1000 * 60 * 60);
+
         String accessToken = JWT.create()
                 .withSubject(user.getId().toString())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * 10 * 60)))
+                .withExpiresAt(accessTokenExpiration)
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("privileges",
                         user.getRole().getPrivileges().stream().map(Privilege::getCode)
                                 .collect(Collectors.toList()))
                 .sign(algorithm);
 
+        response.addHeader("Set-Cookie",
+                "access_token=" + accessToken + "; expires=" + accessTokenExpiration + "; Path=/;");
+
+        Date refreshTokenExpiration = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24);
+
         String refreshToken = JWT.create()
                 .withSubject(user.getId().toString())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
+                .withExpiresAt(refreshTokenExpiration)
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        response.addHeader("Set-Cookie", "access_token=" + accessToken + "; expires="
-                + new Date(System.currentTimeMillis() + (1000 * 10 * 60)) + "; Path=/;");
         response.addHeader("Set-Cookie",
-                "refresh_token=" + refreshToken + "; expires="
-                        + new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 30))
-                        + "; Path=/;");
+                "refresh_token=" + refreshToken + "; expires=" + refreshTokenExpiration + "; Path=/;");
         response.addHeader("Set-Cookie", "JSESSIONID=" + "; Path=/;");
         response.setHeader("access_token", accessToken);
         response.setHeader("refresh_token", refreshToken);

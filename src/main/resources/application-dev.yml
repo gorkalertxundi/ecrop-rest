@@ -14,7 +14,7 @@ spring:
     properties:
       hibernate:
         default-schema:
-
+        
 logging:
     level:
       org:

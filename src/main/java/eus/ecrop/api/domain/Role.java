@@ -48,7 +48,7 @@ public class Role implements Serializable {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private List<User> users;
 
     @ManyToMany(fetch = FetchType.EAGER)

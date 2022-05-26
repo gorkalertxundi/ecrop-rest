@@ -32,6 +32,9 @@ import eus.ecrop.api.service.UserService;
 public class AuthController {
 
     @Autowired
+    Algorithm algorithm;
+
+    @Autowired
     private UserService userService;
 
     /**
@@ -50,14 +53,14 @@ public class AuthController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refreshToken = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
                 String userId = decodedJWT.getSubject();
                 User user = userService.findById(Long.valueOf(userId));
+
                 String accessToken = JWT.create()
                         .withSubject(user.getId().toString())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * 10 * 60)))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("privileges",
                                 user.getRole().getPrivileges().stream().map(Privilege::getCode)

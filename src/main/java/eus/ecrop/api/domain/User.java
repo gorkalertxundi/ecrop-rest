@@ -47,6 +47,7 @@ public class User implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Role role;
 
     @Version
