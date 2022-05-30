@@ -7,7 +7,7 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate: 
+    hibernate:
       ddl-auto: update
     properties:
       hibernate:
@@ -25,3 +25,5 @@ spring:
    
 server:
   port: 9101
+  api:
+    url: https://api.ecrop.ddns.net/
