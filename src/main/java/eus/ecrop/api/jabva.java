@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Bean;
 */
 
 @SpringBootApplication
-public class ECropApiApplication {
+public class jabva {
 
 	@Value("${spring.security.jwt.secret}")
 	private String jwtSecret;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ECropApiApplication.class, args);
+		SpringApplication.run(jabva.class, args);
 	}
 
 	@Bean
