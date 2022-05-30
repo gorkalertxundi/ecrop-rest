@@ -22,3 +22,5 @@ logging:
           # type: TRACE
           # SQL: TRACE
         
+server:
+  port: 8080
