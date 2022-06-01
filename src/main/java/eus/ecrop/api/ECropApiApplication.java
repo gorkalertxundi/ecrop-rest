@@ -2,6 +2,8 @@ package eus.ecrop.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /*
 * @author Mikel Orobengoa
@@ -9,9 +11,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 */
 
 @SpringBootApplication
-public class ECropApiApplication {
+public class ECropApiApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ECropApiApplication.class, args);
+	}
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(ECropApiApplication.class);
 	}
 }
