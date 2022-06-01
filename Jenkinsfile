@@ -61,7 +61,7 @@ pipeline {
                     }
                 }
                 script {
-                    deploy adapters: [tomcat9(credentialsId: 'tomcat-deploy-user', path: '', url: 'https://deploy.web.ecrop.ddns.net')], contextPath: '/', onFailure: false, war: '**/*.war'
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat-deploy-user', path: '', url: 'https://api.ecrop.ddns.net')], contextPath: '/', onFailure: false, war: '**/*.war'
                 }
             }
         }
