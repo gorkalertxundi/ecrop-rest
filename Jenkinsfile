@@ -56,7 +56,7 @@ pipeline {
                 echo '----- Deploy app -----'
                 withMaven (maven: 'M3') {
                     withCredentials([string(credentialsId: 'jasypt-secret', variable: 'JASYPT')]) {
-                        sh 'mvn -Dmaven.test.skip -Dspring.profiles.active=prod \
+                        sh 'mvn -Dmaven.test.skip --spring.profiles.active=prod \
                             -Djasypt.encryptor.password=${JASYPT} package'
                     }
                 }
