@@ -1,7 +1,9 @@
 spring:     
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ecrop
+    password: ENC(VXZp+qDfiYUZ6z6kolHBivH4vmjFA1rwNB9Wk5AjC/LPhCu4AuirCYHkl5ChOBxCjrCKB16EPUHMQhL35gVtOQ==)
+    username: ecrop
+    url: jdbc:postgresql://ecrop.ddns.net:5432/ecrop
     hikari:
       schema: ecrop
 
