@@ -35,4 +35,6 @@ public class LandDto {
 
     private Double pH;
 
+    private Double rainfall;
+
 }

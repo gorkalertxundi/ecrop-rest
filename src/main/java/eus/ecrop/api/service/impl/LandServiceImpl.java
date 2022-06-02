@@ -56,6 +56,7 @@ public class LandServiceImpl implements LandService {
         land.setTemperature(landDto.getTemperature());
         land.setHumidity(landDto.getHumidity());
         land.setPH(landDto.getPH());
+        land.setRainfall(landDto.getRainfall());
         return landRepository.save(land);
     }
 
@@ -77,6 +78,7 @@ public class LandServiceImpl implements LandService {
         land.setTemperature(landDto.getTemperature());
         land.setHumidity(landDto.getHumidity());
         land.setPH(landDto.getPH());
+        land.setRainfall(landDto.getRainfall());
         return landRepository.save(land);
     }
 
@@ -127,6 +129,7 @@ public class LandServiceImpl implements LandService {
         landDto.setTemperature(land.getTemperature());
         landDto.setHumidity(land.getHumidity());
         landDto.setPH(land.getPH());
+        landDto.setRainfall(land.getRainfall());
         return landDto;
     }
 

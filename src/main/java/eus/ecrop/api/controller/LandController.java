@@ -29,7 +29,7 @@ import eus.ecrop.api.service.LandService;
 
 /*
 * @author Mikel Orobengoa
-* @version 06/05/2022
+* @version 26/05/2022
 */
 
 @RestController
@@ -44,7 +44,7 @@ public class LandController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {
         if (size == null || size < 0) {
-            size = 10;
+            size = 10;  
         }
 
         if (page == null || page < 0) {
