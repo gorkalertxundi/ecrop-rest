@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -52,6 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthorizationFilter authorizationFilter;
 
+    @Value("${server.ui}")
+    private String uiUrl;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -66,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .addFilter(new CustomOAuthAuthenticationFilter(clientRegistrationRepository, authorizedClientService,
-                        super.authenticationManagerBean(), algorithm))
+                        super.authenticationManagerBean(), algorithm, uiUrl))
                 .addFilterBefore(authorizationFilter, OAuth2LoginAuthenticationFilter.class)
                 .oauth2Login()
                 .userInfoEndpoint()

@@ -9,15 +9,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 
 import eus.ecrop.api.domain.Privilege;
 import eus.ecrop.api.domain.User;
@@ -35,14 +35,16 @@ import eus.ecrop.api.security.CustomOidcUser;
 public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFilter {
 
     private Algorithm algorithm;
+    private String uiUrl;
 
     @Autowired
     public CustomOAuthAuthenticationFilter(ClientRegistrationRepository clientRegistrationRepository,
             OAuth2AuthorizedClientService authorizedClientService,
-            AuthenticationManager authenticationManager, Algorithm algorithm) {
+            AuthenticationManager authenticationManager, Algorithm algorithm, String uiUrl) {
         super(clientRegistrationRepository, authorizedClientService);
         super.setAuthenticationManager(authenticationManager);
         this.algorithm = algorithm;
+        this.uiUrl = uiUrl;
     }
 
     @Override
@@ -79,7 +81,7 @@ public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFi
         response.addHeader("Set-Cookie", "JSESSIONID=" + "; Path=/;");
         response.setHeader("access_token", accessToken);
         response.setHeader("refresh_token", refreshToken);
-        response.sendRedirect(request.getScheme() + "://" + request.getServerName());
+        response.sendRedirect(uiUrl);
 
     }
 

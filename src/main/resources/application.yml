@@ -27,6 +27,7 @@ spring:
    
 server:
   port: 9101
+  ui: https://www.ecrop.ddns.net/
   api:
     ia:
       recommendation: https://node.ecrop.ddns.net/advisor/
