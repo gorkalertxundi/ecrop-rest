@@ -53,20 +53,20 @@ public class RecommendationRepositoryImpl implements RecommendationRepository {
         builder.queryParam("humidity", land.getHumidity());
         builder.queryParam("ph", land.getPH());
         builder.queryParam("rainfall", land.getRainfall());
-        builder.queryParam("api-key", "urko moxolo"); // TODO: sacar de user ?
+        builder.queryParam("api-key", land.getUser().getApiKey());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         try {
-            System.out.println("Sending request to: " + builder.toUriString());
             ResponseEntity<?> result = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity,
                     String.class);
-            System.out.println(result.getBody());
-            RecommendationResponse res = objectMapper.readValue(result.getBody().toString(),
+            Object body = result.getBody();
+            if (body == null)
+                return null;
+            RecommendationResponse res = objectMapper.readValue(body.toString(),
                     RecommendationResponse.class);
-            System.out.println(res.getPrediction());
             return res.getPrediction();
         } catch (Exception e) {
             e.printStackTrace();

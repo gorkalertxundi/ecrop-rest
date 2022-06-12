@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Data
-public class LandDto extends ValidationGroup {
+public class LandDto implements ValidationGroup {
 
     @Null(groups = { Create.class })
     @NotNull(groups = { Update.class })

@@ -82,12 +82,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
-        // userDto.setId(user.getId());
-        // userDto.setIdToken(user.getIdToken());
-        // userDto.setEmail(user.getEmail());
-        // userDto.setFirstName(user.getFirstName());
-        // userDto.setLastName(user.getLastName());
-        // userDto.setEnabled(user.getEnabled());
         userDto.setImageUrl(user.getImageUrl());
         userDto.setName(user.getName());
         userDto.setActiveSubscription(user.getActiveSubscription());

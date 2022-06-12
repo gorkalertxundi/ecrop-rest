@@ -1,6 +1,6 @@
 package eus.ecrop.api.dto;
 
-public abstract class ValidationGroup {
+public interface ValidationGroup {
     
     public interface Create {
         

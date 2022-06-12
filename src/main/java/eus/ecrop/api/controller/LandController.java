@@ -59,7 +59,7 @@ public class LandController {
         Page<Land> lands = landService.findAllByUser(user.getId(), page, size);
 
         try {
-            Page<LandDto> landDtos = new PageImpl<LandDto>(
+            Page<LandDto> landDtos = new PageImpl<>(
                     lands.getContent().stream().map(land -> landService.convertToDto(land))
                             .collect(Collectors.toList()),
                     lands.getPageable(), lands.getTotalElements());
@@ -86,7 +86,7 @@ public class LandController {
     @PostMapping(path = "create")
     public ResponseEntity<?> create(Authentication authentication,
             @RequestBody @Validated(Create.class) LandDto landDto, BindingResult bindingResult,
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -103,7 +103,7 @@ public class LandController {
     @PutMapping("update")
     public ResponseEntity<?> update(Authentication authentication,
             @RequestBody @Validated(Update.class) LandDto landDto, BindingResult bindingResult,
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -120,7 +120,7 @@ public class LandController {
 
     @DeleteMapping("delete")
     public ResponseEntity<?> delete(Authentication authentication, @RequestParam("id") Long id,
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response) {
         User user = (User) authentication.getPrincipal();
         Land land = landService.findById(id);
 

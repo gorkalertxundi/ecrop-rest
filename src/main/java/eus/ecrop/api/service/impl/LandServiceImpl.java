@@ -1,5 +1,7 @@
 package eus.ecrop.api.service.impl;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,18 +56,7 @@ public class LandServiceImpl implements LandService {
      */
     @Override
     public Land create(LandDto landDto, User user) {
-        Land land = new Land();
-        land.setName(landDto.getName());
-        land.setUser(user);
-        land.setNitrogen(landDto.getNitrogen());
-        land.setPhosphorus(landDto.getPhosphorus());
-        land.setPotassium(landDto.getPotassium());
-        land.setTemperature(landDto.getTemperature());
-        land.setHumidity(landDto.getHumidity());
-        land.setPH(landDto.getPH());
-        land.setRainfall(landDto.getRainfall());
-        land.setRecommendation(recommendationRepository.getRecommendation(land));
-        return landRepository.save(land);
+        return landRepository.save(convertFromDto(null, landDto, user));
     }
 
     /**
@@ -77,18 +68,11 @@ public class LandServiceImpl implements LandService {
      */
     @Override
     public Land update(LandDto landDto, User user) {
-        Land land = landRepository.findById(landDto.getId()).get();
-        land.setName(landDto.getName());
-        land.setUser(user);
-        land.setNitrogen(landDto.getNitrogen());
-        land.setPhosphorus(landDto.getPhosphorus());
-        land.setPotassium(landDto.getPotassium());
-        land.setTemperature(landDto.getTemperature());
-        land.setHumidity(landDto.getHumidity());
-        land.setPH(landDto.getPH());
-        land.setRainfall(landDto.getRainfall());
-        land.setRecommendation(recommendationRepository.getRecommendation(land));
-        return landRepository.save(land);
+        Optional<Land> landOptional = landRepository.findById(landDto.getId());
+        if (landOptional.isEmpty()) {
+            return null;
+        }
+        return landRepository.save(convertFromDto(landOptional.get(), landDto, user));
     }
 
     /**
@@ -124,7 +108,7 @@ public class LandServiceImpl implements LandService {
      */
     @Override
     public Land findById(Long id) {
-        return landRepository.findById(id).get();
+        return landRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -141,6 +125,23 @@ public class LandServiceImpl implements LandService {
         landDto.setRainfall(land.getRainfall());
         landDto.setRecommendation(land.getRecommendation());
         return landDto;
+    }
+
+    private Land convertFromDto(Land land, LandDto landDto, User user) {
+        if (land == null) {
+            land = new Land();
+        }
+        land.setName(landDto.getName());
+        land.setUser(user);
+        land.setNitrogen(landDto.getNitrogen());
+        land.setPhosphorus(landDto.getPhosphorus());
+        land.setPotassium(landDto.getPotassium());
+        land.setTemperature(landDto.getTemperature());
+        land.setHumidity(landDto.getHumidity());
+        land.setPH(landDto.getPH());
+        land.setRainfall(landDto.getRainfall());
+        land.setRecommendation(recommendationRepository.getRecommendation(land));
+        return land;
     }
 
 }

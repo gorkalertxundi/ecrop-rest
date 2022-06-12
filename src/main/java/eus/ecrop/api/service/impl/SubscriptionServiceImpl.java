@@ -46,7 +46,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             throw new UserNotFoundException(userId);
         }
 
-        if (user.getActiveSubscription()) {
+        if (user.getActiveSubscription().booleanValue()) {
             return null;
         }
 
@@ -66,7 +66,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             throw new UserNotFoundException(userId);
         }
 
-        if (user.getActiveSubscription()) {
+        if (user.getActiveSubscription().booleanValue()) {
             return null;
         }
 
