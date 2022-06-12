@@ -65,9 +65,8 @@ public class LandController {
                     lands.getPageable(), lands.getTotalElements());
             return new ResponseEntity<>(landDtos, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("current")

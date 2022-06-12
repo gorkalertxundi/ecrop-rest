@@ -69,7 +69,6 @@ public class RecommendationRepositoryImpl implements RecommendationRepository {
                     RecommendationResponse.class);
             return res.getPrediction();
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
