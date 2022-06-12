@@ -14,7 +14,7 @@ spring:
     properties:
       hibernate:
         default-schema:
-
+        
 logging:
     level:
       org:
@@ -22,3 +22,5 @@ logging:
           # type: TRACE
           # SQL: TRACE
         
+server:
+  port: 8080

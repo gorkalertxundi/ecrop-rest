@@ -13,11 +13,12 @@ import eus.ecrop.api.service.UserService;
 
 /*
 * @author Mikel Orobengoa
-* @version 10/05/2022
+* @version 06/06/2022
 */
 
 /**
- * Custom implementation of the loadUSer method to map the OidcUserRequest to a User Principal.
+ * Custom implementation of the loadUser method to map the OidcUserRequest to a
+ * User Principal.
  */
 @Component
 public class CustomOidcUserServiceImpl implements OAuth2UserService<OidcUserRequest, OidcUser> {
@@ -32,7 +33,9 @@ public class CustomOidcUserServiceImpl implements OAuth2UserService<OidcUserRequ
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
         User user = userService.findByIdToken(oidcUser.getSubject());
         if (user == null) {
-            user = userService.registerUser(oidcUser.getSubject());
+            user = userService.registerUser(oidcUser.getSubject(), oidcUser.getName(), oidcUser.getPicture());
+        } else {
+            user = userService.updateUser(user.getId(), oidcUser.getName(), oidcUser.getPicture());
         }
         oidcUser = new CustomOidcUser(user, oidcUser.getIdToken(), oidcUser.getUserInfo());
         return oidcUser;

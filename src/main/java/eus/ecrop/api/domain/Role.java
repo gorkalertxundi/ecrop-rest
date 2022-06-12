@@ -38,6 +38,9 @@ public class Role implements Serializable {
 
     private static final long serialVersionUID = -812059079087230117L;
 
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_SUBSCRIBER = "ROLE_SUBSCRIBER";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,7 +51,9 @@ public class Role implements Serializable {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<User> users;
 
     @ManyToMany(fetch = FetchType.EAGER)
