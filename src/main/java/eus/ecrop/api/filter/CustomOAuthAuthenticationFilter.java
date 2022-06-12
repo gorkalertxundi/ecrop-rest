@@ -79,9 +79,9 @@ public class CustomOAuthAuthenticationFilter extends OAuth2LoginAuthenticationFi
         response.addHeader("Set-Cookie",
                 "refresh_token=" + refreshToken + "; expires=" + refreshTokenExpiration + "; Path=/;");
         response.addHeader("Set-Cookie", "JSESSIONID=" + "; Path=/;");
-        response.setHeader("access_token", accessToken);
-        response.setHeader("refresh_token", refreshToken);
-        response.sendRedirect(uiUrl);
+        // response.setHeader("access_token", accessToken);
+        // response.setHeader("refresh_token", refreshToken);
+        response.sendRedirect(uiUrl + "?access_token=" + accessToken + "&refresh_token=" + refreshToken);
 
     }
 
