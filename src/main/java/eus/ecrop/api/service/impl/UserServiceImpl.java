@@ -1,16 +1,20 @@
 package eus.ecrop.api.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eus.ecrop.api.domain.User;
+import eus.ecrop.api.dto.UserDto;
+import eus.ecrop.api.exception.UserNotFoundException;
 import eus.ecrop.api.repository.UserRepository;
 import eus.ecrop.api.service.RoleService;
 import eus.ecrop.api.service.UserService;
 
 /*
 * @author Mikel Orobengoa
-* @version 10/05/2022
+* @version 10/06/2022
 */
 
 /**
@@ -18,6 +22,7 @@ import eus.ecrop.api.service.UserService;
  * interface
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -46,11 +51,14 @@ public class UserServiceImpl implements UserService {
      * @return A User object.
      */
     @Override
-    public User registerUser(String idToken) {
+    public User registerUser(String idToken, String name, String imageUrl) {
         User user = new User();
         user.setRole(roleService.findByName("ROLE_USER"));
         user.setEnabled(true);
         user.setIdToken(idToken);
+        user.setName(name);
+        user.setImageUrl(imageUrl);
+        user.setActiveSubscription(false);
         user = userRepository.save(user);
         return user;
     }
@@ -64,5 +72,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public UserDto convertToDto(User user) {
+        UserDto userDto = new UserDto();
+        // userDto.setId(user.getId());
+        // userDto.setIdToken(user.getIdToken());
+        // userDto.setEmail(user.getEmail());
+        // userDto.setFirstName(user.getFirstName());
+        // userDto.setLastName(user.getLastName());
+        // userDto.setEnabled(user.getEnabled());
+        userDto.setImageUrl(user.getImageUrl());
+        userDto.setName(user.getName());
+        userDto.setActiveSubscription(user.getActiveSubscription());
+        return userDto;
+    }
+
+    @Override
+    public User updateUser(Long id, String name, String picture) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            throw new UserNotFoundException(id);
+        }
+        user.setName(name);
+        user.setImageUrl(picture);
+        user = userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User findByApiKey(String apiKey) {
+        return userRepository.findByApiKey(apiKey).orElse(null);
     }
 }

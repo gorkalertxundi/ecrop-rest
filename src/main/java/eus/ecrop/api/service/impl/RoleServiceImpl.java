@@ -1,5 +1,7 @@
 package eus.ecrop.api.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,7 @@ import eus.ecrop.api.service.RoleService;
 
 /*
 * @author Mikel Orobengoa
-* @version 10/05/2022
+* @version 08/06/2022
 */
 
 /**
@@ -17,6 +19,7 @@ import eus.ecrop.api.service.RoleService;
  * interface
  */
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
 
     @Autowired

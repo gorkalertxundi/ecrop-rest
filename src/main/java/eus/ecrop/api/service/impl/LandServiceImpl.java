@@ -1,5 +1,7 @@
 package eus.ecrop.api.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,11 +13,12 @@ import eus.ecrop.api.domain.Land;
 import eus.ecrop.api.domain.User;
 import eus.ecrop.api.dto.LandDto;
 import eus.ecrop.api.repository.LandRepository;
+import eus.ecrop.api.repository.RecommendationRepository;
 import eus.ecrop.api.service.LandService;
 
 /*
 * @author Mikel Orobengoa
-* @version 26/05/2022
+* @version 08/06/2022
 */
 
 /**
@@ -23,10 +26,14 @@ import eus.ecrop.api.service.LandService;
  * interface
  */
 @Service
+@Transactional
 public class LandServiceImpl implements LandService {
 
     @Autowired
     private LandRepository landRepository;
+
+    @Autowired
+    private RecommendationRepository recommendationRepository;
 
     /**
      * Saves a Land instance
@@ -57,6 +64,7 @@ public class LandServiceImpl implements LandService {
         land.setHumidity(landDto.getHumidity());
         land.setPH(landDto.getPH());
         land.setRainfall(landDto.getRainfall());
+        land.setRecommendation(recommendationRepository.getRecommendation(land));
         return landRepository.save(land);
     }
 
@@ -79,6 +87,7 @@ public class LandServiceImpl implements LandService {
         land.setHumidity(landDto.getHumidity());
         land.setPH(landDto.getPH());
         land.setRainfall(landDto.getRainfall());
+        land.setRecommendation(recommendationRepository.getRecommendation(land));
         return landRepository.save(land);
     }
 
@@ -130,6 +139,7 @@ public class LandServiceImpl implements LandService {
         landDto.setHumidity(land.getHumidity());
         landDto.setPH(land.getPH());
         landDto.setRainfall(land.getRainfall());
+        landDto.setRecommendation(land.getRecommendation());
         return landDto;
     }
 

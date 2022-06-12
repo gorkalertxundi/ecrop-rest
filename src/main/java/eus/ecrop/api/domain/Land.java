@@ -44,7 +44,7 @@ public class Land implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Column(name = "nitrogen", nullable = true)
@@ -67,6 +67,9 @@ public class Land implements Serializable {
     
     @Column(name = "rainfall", nullable = true)
     private Double rainfall;
+
+    @Column(name = "recommendation")
+    private String recommendation;
 
     @Version
     @ToString.Exclude

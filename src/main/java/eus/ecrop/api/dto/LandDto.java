@@ -1,8 +1,14 @@
 package eus.ecrop.api.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 
 /*
 * @author Mikel Orobengoa
@@ -15,12 +21,15 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 @Data
-public class LandDto {
+public class LandDto extends ValidationGroup {
 
+    @Null(groups = { Create.class })
+    @NotNull(groups = { Update.class })
     private Long id;
 
-    // @NotEmpty(message = "The name is required")
+    @NotEmpty(message = "The name is required", groups = { Create.class, Update.class })
     private String name;
 
     private Integer nitrogen;
@@ -36,5 +45,7 @@ public class LandDto {
     private Double pH;
 
     private Double rainfall;
+
+    private String recommendation;
 
 }

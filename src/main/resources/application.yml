@@ -25,3 +25,9 @@ spring:
    
 server:
   port: 9101
+  api:
+    ia:
+      recommendation: https://node.ecrop.ddns.net/advisor/
+
+subscription:
+  price: 19.95

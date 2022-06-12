@@ -83,7 +83,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    response.getOutputStream().print(e.getMessage());
+                    e.printStackTrace();
                 }
             } else {
                 filterChain.doFilter(request, response);

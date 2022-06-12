@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import eus.ecrop.api.domain.Land;
 import eus.ecrop.api.domain.User;
 import eus.ecrop.api.dto.LandDto;
+import eus.ecrop.api.dto.ValidationGroup.Create;
+import eus.ecrop.api.dto.ValidationGroup.Update;
 import eus.ecrop.api.service.LandService;
 
 /*
@@ -44,7 +48,7 @@ public class LandController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {
         if (size == null || size < 0) {
-            size = 10;  
+            size = 10;
         }
 
         if (page == null || page < 0) {
@@ -53,12 +57,17 @@ public class LandController {
 
         User user = (User) authentication.getPrincipal();
         Page<Land> lands = landService.findAllByUser(user.getId(), page, size);
-        lands.getContent().forEach(land -> land.setUser(null));
 
-        Page<LandDto> landDtos = new PageImpl<LandDto>(
-                lands.getContent().stream().map(land -> landService.convertToDto(land)).collect(Collectors.toList()),
-                lands.getPageable(), lands.getTotalElements());
-        return new ResponseEntity<>(landDtos, HttpStatus.OK);
+        try {
+            Page<LandDto> landDtos = new PageImpl<LandDto>(
+                    lands.getContent().stream().map(land -> landService.convertToDto(land))
+                            .collect(Collectors.toList()),
+                    lands.getPageable(), lands.getTotalElements());
+            return new ResponseEntity<>(landDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("current")
@@ -75,9 +84,16 @@ public class LandController {
     }
 
     @PostMapping(path = "create")
-    public ResponseEntity<?> create(Authentication authentication, @RequestBody LandDto landDto,
+    public ResponseEntity<?> create(Authentication authentication,
+            @RequestBody @Validated(Create.class) LandDto landDto, BindingResult bindingResult,
             HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
         User user = (User) authentication.getPrincipal();
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         Land land = landService.create(landDto, user);
         land = landService.save(land);
 
@@ -85,8 +101,12 @@ public class LandController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<?> update(Authentication authentication, @RequestBody LandDto landDto,
+    public ResponseEntity<?> update(Authentication authentication,
+            @RequestBody @Validated(Update.class) LandDto landDto, BindingResult bindingResult,
             HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
         User user = (User) authentication.getPrincipal();
         Land land = landService.update(landDto, user);
 
